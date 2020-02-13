@@ -13,6 +13,10 @@
 		8055F7A223F5A66300CB2CD4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8055F7A123F5A66300CB2CD4 /* Assets.xcassets */; };
 		8055F7A523F5A66300CB2CD4 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8055F7A423F5A66300CB2CD4 /* Preview Assets.xcassets */; };
 		8055F7A823F5A66300CB2CD4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8055F7A623F5A66300CB2CD4 /* LaunchScreen.storyboard */; };
+		8055F7B223F5A72B00CB2CD4 /* AsyncImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8055F7B123F5A72B00CB2CD4 /* AsyncImage.swift */; };
+		8055F7B423F5A73100CB2CD4 /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8055F7B323F5A73100CB2CD4 /* ImageLoader.swift */; };
+		8055F7B623F5A73C00CB2CD4 /* ImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8055F7B523F5A73C00CB2CD4 /* ImageCache.swift */; };
+		8055F7B823F5AD3D00CB2CD4 /* ImageBinder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8055F7B723F5AD3D00CB2CD4 /* ImageBinder.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +28,10 @@
 		8055F7A423F5A66300CB2CD4 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		8055F7A723F5A66300CB2CD4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8055F7A923F5A66300CB2CD4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8055F7B123F5A72B00CB2CD4 /* AsyncImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncImage.swift; sourceTree = "<group>"; };
+		8055F7B323F5A73100CB2CD4 /* ImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
+		8055F7B523F5A73C00CB2CD4 /* ImageCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCache.swift; sourceTree = "<group>"; };
+		8055F7B723F5AD3D00CB2CD4 /* ImageBinder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageBinder.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,13 +64,14 @@
 		8055F79A23F5A66200CB2CD4 /* AsyncImage */ = {
 			isa = PBXGroup;
 			children = (
-				8055F79B23F5A66200CB2CD4 /* AppDelegate.swift */,
-				8055F79D23F5A66200CB2CD4 /* SceneDelegate.swift */,
 				8055F79F23F5A66200CB2CD4 /* ContentView.swift */,
-				8055F7A123F5A66300CB2CD4 /* Assets.xcassets */,
-				8055F7A623F5A66300CB2CD4 /* LaunchScreen.storyboard */,
-				8055F7A923F5A66300CB2CD4 /* Info.plist */,
+				8055F7B123F5A72B00CB2CD4 /* AsyncImage.swift */,
+				8055F7B723F5AD3D00CB2CD4 /* ImageBinder.swift */,
+				8055F7B323F5A73100CB2CD4 /* ImageLoader.swift */,
+				8055F7B523F5A73C00CB2CD4 /* ImageCache.swift */,
+				8055F7B023F5A6EE00CB2CD4 /* App */,
 				8055F7A323F5A66300CB2CD4 /* Preview Content */,
+				8055F7AF23F5A6E500CB2CD4 /* SupportingFiles */,
 			);
 			path = AsyncImage;
 			sourceTree = "<group>";
@@ -73,6 +82,25 @@
 				8055F7A423F5A66300CB2CD4 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		8055F7AF23F5A6E500CB2CD4 /* SupportingFiles */ = {
+			isa = PBXGroup;
+			children = (
+				8055F7A123F5A66300CB2CD4 /* Assets.xcassets */,
+				8055F7A623F5A66300CB2CD4 /* LaunchScreen.storyboard */,
+				8055F7A923F5A66300CB2CD4 /* Info.plist */,
+			);
+			path = SupportingFiles;
+			sourceTree = "<group>";
+		};
+		8055F7B023F5A6EE00CB2CD4 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				8055F79B23F5A66200CB2CD4 /* AppDelegate.swift */,
+				8055F79D23F5A66200CB2CD4 /* SceneDelegate.swift */,
+			);
+			path = App;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -146,8 +174,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8055F7B623F5A73C00CB2CD4 /* ImageCache.swift in Sources */,
+				8055F7B223F5A72B00CB2CD4 /* AsyncImage.swift in Sources */,
 				8055F79C23F5A66200CB2CD4 /* AppDelegate.swift in Sources */,
+				8055F7B423F5A73100CB2CD4 /* ImageLoader.swift in Sources */,
 				8055F79E23F5A66200CB2CD4 /* SceneDelegate.swift in Sources */,
+				8055F7B823F5AD3D00CB2CD4 /* ImageBinder.swift in Sources */,
 				8055F7A023F5A66200CB2CD4 /* ContentView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -287,7 +319,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"AsyncImage/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = AsyncImage/Info.plist;
+				INFOPLIST_FILE = AsyncImage/SupportingFiles/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -306,7 +338,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"AsyncImage/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = AsyncImage/Info.plist;
+				INFOPLIST_FILE = AsyncImage/SupportingFiles/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
