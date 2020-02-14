@@ -18,7 +18,20 @@ struct AsyncImage: View {
     }
     
     var body: some View {
-        Image(uiImage: loader.image)
+        image
             .onAppear(perform: loader.load)
+            .onDisappear(perform: loader.cancel)
+    }
+    
+    private var image: some View {
+        Group {
+            if loader.image != nil {
+                loader.image.map(Image.init(uiImage:))
+            } else if placeholder != nil {
+                placeholder
+            } else {
+                EmptyView()
+            }
+        }
     }
 }
