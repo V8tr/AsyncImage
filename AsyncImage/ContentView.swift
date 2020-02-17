@@ -9,18 +9,10 @@
 import SwiftUI
 import Combine
 
-struct ContentView: View {
-    @State var cancellables: Set<AnyCancellable> = []
-    
+struct ContentView: View {    
     var body: some View {
-        Text("Hello, World!")
-            .onAppear {
-                api
-                    .search("cats")
-                    .sink(receiveCompletion: { print($0) },
-                          receiveValue: { print($0) })
-                    .store(in: &self.cancellables)
-        }
+        Imgur.ImagesList()
+            .environmentObject(Imgur.ImagesListViewModel())
     }
 }
 
