@@ -50,7 +50,8 @@ extension Imgur {
     }
 
     struct Image: Decodable {
-        let id: String
+//        let id: String
+        let id = UUID()
         let link: String?
         let type: String?
         

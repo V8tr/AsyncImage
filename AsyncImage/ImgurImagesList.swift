@@ -36,17 +36,15 @@ extension Imgur {
     
     struct ImageView: View {
         let image: Imgur.Image
-        private var url: URL? { image.link.flatMap(URL.init) }
         
         var body: some View {
-            url.map {
+            image.link.flatMap(URL.init).map {
                 AsyncImage(
-                    loader: ImageLoader(url: $0, cache: { NSCache().setObject(<#T##obj: _##_#>, forKey: <#T##_#>) }),
+                    url: $0,
+                    cache: ImageCacheImpl(),
                     placeholder: spinner,
-                    configuration: {
-                        $0.resizable().renderingMode(.original)
-                })
-                    .aspectRatio(contentMode: .fit)
+                    configuration: { $0.resizable().renderingMode(.original) }
+                ).aspectRatio(contentMode: .fit)
             }
         }
         
@@ -65,6 +63,7 @@ extension Imgur {
         func searchImages(_ term: String) {
             Imgur.api.search(term)
                 .map { $0.data.compactMap(\.images).flatMap { $0 }.filter(\.isImage) }
+//                .map { Array($0.prefix(5)) }
                 .replaceError(with: [])
                 .sink { images in
                     self.state.images = images

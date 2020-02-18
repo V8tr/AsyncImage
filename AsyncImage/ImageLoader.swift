@@ -9,39 +9,54 @@
 import Combine
 import SwiftUI
 
-struct Cache {
-    let `get`: (URL) -> UIImage?
-    let `set`: (UIImage, URL) -> Void
+protocol ImageCache {
+    func set(image: UIImage, forKey: URL)
+    func image(forKey: URL) -> UIImage?
+}
+
+struct ImageCacheImpl: ImageCache {
+    let cache = NSCache<NSURL, UIImage>()
     
-    static let null = Cache(get: { _ in nil }, set: { _, _ in })
+    func set(image: UIImage, forKey key: URL) {
+        cache.setObject(image, forKey: key as NSURL)
+    }
     
-    static let nsCache = Cache(get: {
-        NSCache<NSString, UIImage>().object(forKey: $0.absoluteString as NSString)
-    }, set: { _, _ in })
+    func image(forKey key: URL) -> UIImage? {
+        return cache.object(forKey: key as NSURL)
+    }
 }
 
 class ImageLoader: ObservableObject {
     @Published var image: UIImage?
+    
+    static var count = 0
 
     private let url: URL
-    private let cache: Cache
+    private let cache: ImageCache?
     private var cancellable: AnyCancellable?
     
-    init(url: URL, cache: Cache = .null) {
+    init(url: URL, cache: ImageCache? = nil) {
         self.url = url
         self.cache = cache
     }
     
     func load() {
-        image = cache.get(url)
+        if let image = cache?.image(forKey: url) {
+            print("Loaded from cache \(url)")
+            self.image = image
+            return
+        }
         
         cancellable = URLSession.shared
             .dataTaskPublisher(for: url)
             .map { UIImage(data: $0.data) }
+            .handleEvents(receiveSubscription: { _ in Self.count += 1; print("Start \(self.url) total \(Self.count)") },
+                          receiveCompletion: { _ in Self.count -= 1; print("Loaded \(self.url) total \(Self.count)") },
+                          receiveCancel: { Self.count -= 1; print("Cancel \(self.url) total \(Self.count)") })
             .replaceError(with: nil)
             .receive(on: DispatchQueue.main)
             .handleEvents(receiveOutput: { image in
-                image.map { [url = self.url] in self.cache.set($0, url) } // Check for retain cycle
+                image.map { self.cache?.set(image: $0, forKey: self.url) } // Check for retain cycle
             })
             .assign(to: \.image, on: self)
     }
