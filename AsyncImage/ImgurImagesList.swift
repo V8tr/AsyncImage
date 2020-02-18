@@ -14,11 +14,44 @@ extension Imgur {
         @EnvironmentObject var viewModel: ImagesListViewModel
         
         var body: some View {
-            List(viewModel.state.images) { image in
-                Text(image.id)
-            }.onAppear {
-                self.viewModel.search("cats")
+            Group {
+                if self.viewModel.state.images.isEmpty {
+                    Spinner(isAnimating: true, style: .large)
+                } else {
+                    imagesList
+                }
             }
+            .onAppear {
+                self.viewModel.searchImages("trump")
+            }
+        }
+        
+        private var imagesList: some View {
+            List(viewModel.state.images) { image in
+                ImageView(image: image)
+                    .frame(minHeight: 100, maxHeight: 500)
+            }
+        }
+    }
+    
+    struct ImageView: View {
+        let image: Imgur.Image
+        private var url: URL? { image.link.flatMap(URL.init) }
+        
+        var body: some View {
+            url.map {
+                AsyncImage(
+                    loader: ImageLoader(url: $0, cache: { NSCache().setObject(<#T##obj: _##_#>, forKey: <#T##_#>) }),
+                    placeholder: spinner,
+                    configuration: {
+                        $0.resizable().renderingMode(.original)
+                })
+                    .aspectRatio(contentMode: .fit)
+            }
+        }
+        
+        private var spinner: Spinner {
+            Spinner(isAnimating: true, style: .large)
         }
     }
 }
@@ -29,9 +62,9 @@ extension Imgur {
         
         private var tokens: Set<AnyCancellable> = []
         
-        func search(_ term: String) {
+        func searchImages(_ term: String) {
             Imgur.api.search(term)
-                .map { $0.data.compactMap(\.images).flatMap { $0 } }
+                .map { $0.data.compactMap(\.images).flatMap { $0 }.filter(\.isImage) }
                 .replaceError(with: [])
                 .sink { images in
                     self.state.images = images

@@ -8,25 +8,50 @@
 
 import SwiftUI
 
-struct AsyncImage: View {
-    @ObservedObject private var loader: ImageLoader
-    private let placeholder: AnyView?
-    
-    init(url: URL, placeholder: AnyView? = nil) {
-        self.placeholder = placeholder
-        loader = ImageLoader(url: url)
-    }
+//struct AsyncImage<Placeholder: View>: View {
+//    @ObservedObject private var loader: ImageLoader
+//    private var placeholder: Placeholder?
+//
+//    init(url: URL, placeholder: Placeholder? = nil) {
+//        self.placeholder = placeholder
+//        loader = ImageLoader(url: url)
+//    }
+//
+//    var body: some View {
+//        image
+//            .onAppear(perform: loader.load)
+//    }
+//
+//    private var image: some View {
+//        Group {
+//            if loader.image != nil {
+//                loader.image.map(Image.init(uiImage:))?
+//                    .resizable()
+//                    .renderingMode(.original)
+//                    .aspectRatio(contentMode: .fit)
+//            } else if placeholder != nil {
+//                placeholder
+//            } else {
+//                EmptyView()
+//            }
+//        }
+//    }
+//}
+
+struct AsyncImage<Placeholder: View>: View {
+    @ObservedObject var loader: ImageLoader
+    let placeholder: Placeholder?
+    let configuration: (Image) -> Image
     
     var body: some View {
         image
             .onAppear(perform: loader.load)
-            .onDisappear(perform: loader.cancel)
     }
     
     private var image: some View {
         Group {
             if loader.image != nil {
-                loader.image.map(Image.init(uiImage:))
+                configuration(Image(uiImage: loader.image!))
             } else if placeholder != nil {
                 placeholder
             } else {

@@ -19,7 +19,7 @@ extension Imgur {
         var session = URLSession.shared
         
         func search(_ query: String) -> AnyPublisher<SearchResponse, Error> {
-            let url = URL(string: "https://api.imgur.com/3/gallery/top/day/search?q=\(query)")!
+            let url = URL(string: "https://api.imgur.com/3/gallery/search?q=\(query)")!
             return request(URLRequest(url: url))
         }
         
@@ -52,5 +52,8 @@ extension Imgur {
     struct Image: Decodable {
         let id: String
         let link: String?
+        let type: String?
+        
+        var isImage: Bool { type == "image/png" }
     }
 }
