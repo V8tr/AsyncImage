@@ -9,6 +9,8 @@
 import SwiftUI
 import Combine
 
+let cache = ImageCacheImpl()
+
 extension Imgur {
     struct ImagesList: View {
         @EnvironmentObject var viewModel: ImagesListViewModel
@@ -41,7 +43,7 @@ extension Imgur {
             image.link.flatMap(URL.init).map {
                 AsyncImage(
                     url: $0,
-                    cache: ImageCacheImpl(),
+                    cache: cache,
                     placeholder: spinner,
                     configuration: { $0.resizable().renderingMode(.original) }
                 ).aspectRatio(contentMode: .fit)
@@ -62,7 +64,7 @@ extension Imgur {
         
         func searchImages(_ term: String) {
             Imgur.api.search(term)
-                .map { $0.data.compactMap(\.images).flatMap { $0 }.filter(\.isImage) }
+                .map { $0.data.compactMap { $0.images }.flatMap { $0 }.filter { $0.isImage } }
                 .replaceError(with: [])
                 .sink { images in self.state.images = images }
                 .store(in: &tokens)

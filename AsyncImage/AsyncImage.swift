@@ -67,7 +67,3 @@ struct AsyncImage<Placeholder: View>: View {
         }
     }
 }
-
-extension AsyncImage: Equatable {
-    static func
-}

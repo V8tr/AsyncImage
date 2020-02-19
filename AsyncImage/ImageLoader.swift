@@ -15,12 +15,12 @@ class ImageLoader: ObservableObject {
     private let url: URL
     private var cache: ImageCache?
     private var cancellable: AnyCancellable?
-    private let imageProcessingQueue = DispatchQueue(label: "image-processing")
     
-    private var isRunning: Bool { Self.activeLoaders.keys.contains(url) }
+    private var isRunning: Bool { Self.activeLoaders[url] != nil }
     private var count = 0
     private static var count = 0
     private static var activeLoaders: [URL: ImageLoader] = [:]
+    private static let imageProcessingQueue = DispatchQueue(label: "image-processing")
     
     static func loader(url: URL, cache: ImageCache? = nil) -> ImageLoader {
         return activeLoaders[url, default: ImageLoader(url: url, cache: cache)]
@@ -55,7 +55,7 @@ class ImageLoader: ObservableObject {
                           receiveOutput: { [unowned self] in self.cache($0) },
                           receiveCompletion: { _ in self.onReceiveCompletion() },
                           receiveCancel: onReceiveCancel)
-            .subscribe(on: imageProcessingQueue)
+            .subscribe(on: Self.imageProcessingQueue)
             .receive(on: DispatchQueue.main)
             .assign(to: \.image, on: self)
     }
@@ -78,6 +78,7 @@ class ImageLoader: ObservableObject {
         Self.count -= 1
         count -= 1
         log(label: "Cancel")
+        Self.activeLoaders[url] = nil
     }
     
     private func log(label: String) {
