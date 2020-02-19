@@ -63,11 +63,9 @@ extension Imgur {
         func searchImages(_ term: String) {
             Imgur.api.search(term)
                 .map { $0.data.compactMap(\.images).flatMap { $0 }.filter(\.isImage) }
-//                .map { Array($0.prefix(5)) }
                 .replaceError(with: [])
-                .sink { images in
-                    self.state.images = images
-            }.store(in: &tokens)
+                .sink { images in self.state.images = images }
+                .store(in: &tokens)
         }
         
         struct State {

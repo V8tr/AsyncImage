@@ -44,7 +44,7 @@ struct AsyncImage<Placeholder: View>: View {
     let configuration: (Image) -> Image
     
     init(url: URL, cache: ImageCache? = nil, placeholder: Placeholder? = nil, configuration: @escaping (Image) -> Image) {
-        loader = ImageLoader(url: url, cache: cache)
+        loader = .loader(url: url, cache: cache)
         self.placeholder = placeholder
         self.configuration = configuration
     }
@@ -66,4 +66,8 @@ struct AsyncImage<Placeholder: View>: View {
             }
         }
     }
+}
+
+extension AsyncImage: Equatable {
+    static func
 }

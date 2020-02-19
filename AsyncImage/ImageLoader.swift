@@ -9,59 +9,88 @@
 import Combine
 import SwiftUI
 
-protocol ImageCache {
-    func set(image: UIImage, forKey: URL)
-    func image(forKey: URL) -> UIImage?
-}
-
-struct ImageCacheImpl: ImageCache {
-    let cache = NSCache<NSURL, UIImage>()
-    
-    func set(image: UIImage, forKey key: URL) {
-        cache.setObject(image, forKey: key as NSURL)
-    }
-    
-    func image(forKey key: URL) -> UIImage? {
-        return cache.object(forKey: key as NSURL)
-    }
-}
-
 class ImageLoader: ObservableObject {
     @Published var image: UIImage?
     
-    static var count = 0
-
     private let url: URL
-    private let cache: ImageCache?
+    private var cache: ImageCache?
     private var cancellable: AnyCancellable?
+    private let imageProcessingQueue = DispatchQueue(label: "image-processing")
     
-    init(url: URL, cache: ImageCache? = nil) {
+    private var isRunning: Bool { Self.activeLoaders.keys.contains(url) }
+    private var count = 0
+    private static var count = 0
+    private static var activeLoaders: [URL: ImageLoader] = [:]
+    
+    static func loader(url: URL, cache: ImageCache? = nil) -> ImageLoader {
+        return activeLoaders[url, default: ImageLoader(url: url, cache: cache)]
+        
+//        if let loader = activeLoaders[url] {
+//            return loader
+//        } else {
+//            let loader = ImageLoader(url: url, cache: cache)
+//            activeLoaders[url] = loader
+//            return loader
+//        }
+    }
+    
+    private init(url: URL, cache: ImageCache? = nil) {
         self.url = url
         self.cache = cache
     }
     
     func load() {
-        if let image = cache?.image(forKey: url) {
-            print("Loaded from cache \(url)")
+        if let image = cache?[url] {
+            print("🏎 Loaded from cache \(url)")
             self.image = image
             return
         }
         
-        cancellable = URLSession.shared
-            .dataTaskPublisher(for: url)
+        guard !isRunning else { return }
+        
+        cancellable = URLSession.shared.dataTaskPublisher(for: url)
             .map { UIImage(data: $0.data) }
-            .handleEvents(receiveSubscription: { _ in Self.count += 1; print("Start \(self.url) total \(Self.count)") },
-                          receiveCompletion: { _ in Self.count -= 1; print("Loaded \(self.url) total \(Self.count)") },
-                          receiveCancel: { Self.count -= 1; print("Cancel \(self.url) total \(Self.count)") })
             .replaceError(with: nil)
+            .handleEvents(receiveSubscription: onReceiveSubscription,
+                          receiveOutput: { [unowned self] in self.cache($0) },
+                          receiveCompletion: { _ in self.onReceiveCompletion() },
+                          receiveCancel: onReceiveCancel)
+            .subscribe(on: imageProcessingQueue)
             .receive(on: DispatchQueue.main)
-            .handleEvents(receiveOutput: { image in
-                image.map { self.cache?.set(image: $0, forKey: self.url) } // Check for retain cycle
-            })
             .assign(to: \.image, on: self)
+    }
+    
+    private func onReceiveSubscription(_ subscription: Subscription) {
+        Self.activeLoaders[url] = self
+        Self.count += 1
+        count += 1
+        log(label: "Start")
+    }
+    
+    private func onReceiveCompletion() {
+        Self.count -= 1
+        count += 1
+        log(label: "Loaded")
+        Self.activeLoaders[url] = nil
+    }
+    
+    private func onReceiveCancel() {
+        Self.count -= 1
+        count -= 1
+        log(label: "Cancel")
+    }
+    
+    private func log(label: String) {
+        print("🏎 \(label) \(self.url) total \(Self.count) self \(count)")
     }
     
     func cancel() {
         cancellable?.cancel()
+    }
+    
+    private func cache(_ image: UIImage?) {
+        assert(image != nil)
+        log(label: "Cache")
+        image.map { cache?[url] = $0 }
     }
 }

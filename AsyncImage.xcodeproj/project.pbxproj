@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		800DAA0823FD8B6700F5AE02 /* ImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 800DAA0723FD8B6700F5AE02 /* ImageCache.swift */; };
 		8055F79C23F5A66200CB2CD4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8055F79B23F5A66200CB2CD4 /* AppDelegate.swift */; };
 		8055F79E23F5A66200CB2CD4 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8055F79D23F5A66200CB2CD4 /* SceneDelegate.swift */; };
 		8055F7A023F5A66200CB2CD4 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8055F79F23F5A66200CB2CD4 /* ContentView.swift */; };
@@ -21,6 +22,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		800DAA0723FD8B6700F5AE02 /* ImageCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCache.swift; sourceTree = "<group>"; };
 		8055F79823F5A66200CB2CD4 /* AsyncImage.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AsyncImage.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8055F79B23F5A66200CB2CD4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8055F79D23F5A66200CB2CD4 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -71,6 +73,7 @@
 				809B9EC223F6B86000425B0A /* ImgurAPI.swift */,
 				8055F7B123F5A72B00CB2CD4 /* AsyncImage.swift */,
 				8055F7B323F5A73100CB2CD4 /* ImageLoader.swift */,
+				800DAA0723FD8B6700F5AE02 /* ImageCache.swift */,
 				805F610F23FC0CD30010397E /* Spinner.swift */,
 				8055F7B023F5A6EE00CB2CD4 /* App */,
 				8055F7A323F5A66300CB2CD4 /* Preview Content */,
@@ -180,6 +183,7 @@
 				8055F7B223F5A72B00CB2CD4 /* AsyncImage.swift in Sources */,
 				809B9EC323F6B86000425B0A /* ImgurAPI.swift in Sources */,
 				809B9EC123F6B36800425B0A /* ImgurImagesList.swift in Sources */,
+				800DAA0823FD8B6700F5AE02 /* ImageCache.swift in Sources */,
 				8055F79C23F5A66200CB2CD4 /* AppDelegate.swift in Sources */,
 				8055F7B423F5A73100CB2CD4 /* ImageLoader.swift in Sources */,
 				8055F79E23F5A66200CB2CD4 /* SceneDelegate.swift in Sources */,
