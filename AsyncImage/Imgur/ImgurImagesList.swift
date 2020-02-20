@@ -9,8 +9,6 @@
 import SwiftUI
 import Combine
 
-let cache = ImageCacheImpl()
-
 extension Imgur {
     struct ImagesList: View {
         @EnvironmentObject var viewModel: ImagesListViewModel
@@ -31,7 +29,7 @@ extension Imgur {
         private var imagesList: some View {
             List(viewModel.state.images) { image in
                 ImageView(image: image)
-                    .frame(minHeight: 100, maxHeight: 500)
+                    .frame(minHeight: 100, maxHeight: 100)
             }
         }
     }
@@ -43,7 +41,7 @@ extension Imgur {
             image.link.flatMap(URL.init).map {
                 AsyncImage(
                     url: $0,
-                    cache: cache,
+//                    cache: cache,
                     placeholder: spinner,
                     configuration: { $0.resizable().renderingMode(.original) }
                 ).aspectRatio(contentMode: .fit)
@@ -64,7 +62,15 @@ extension Imgur {
         
         func searchImages(_ term: String) {
             Imgur.api.search(term)
-                .map { $0.data.compactMap { $0.images }.flatMap { $0 }.filter { $0.isImage } }
+                .map { $0.data.compactMap(\.images).flatMap { $0 }.filter(\.isImage) }
+                .replaceError(with: [])
+                .sink { images in self.state.images = images }
+                .store(in: &tokens)
+        }
+        
+        func searchMemes() {
+            Imgur.api.memes()
+                .map { $0.data.compactMap(\.images).flatMap { $0 }.filter(\.isImage) }
                 .replaceError(with: [])
                 .sink { images in self.state.images = images }
                 .store(in: &tokens)
@@ -77,5 +83,4 @@ extension Imgur {
 }
 
 extension Imgur.Image: Identifiable {}
-
 extension Imgur.Post: Identifiable {}
