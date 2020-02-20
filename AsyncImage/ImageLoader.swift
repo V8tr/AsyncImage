@@ -15,10 +15,8 @@ class ImageLoader: ObservableObject {
     private let url: URL
     private var cache: ImageCache?
     private var cancellable: AnyCancellable?
-    
     private var isRunning: Bool { Self.activeLoaders[url] != nil }
-    private var count = 0
-    private static var count = 0
+    
     private static var activeLoaders: [URL: ImageLoader] = [:]
     private static let imageProcessingQueue = DispatchQueue(label: "image-processing")
     
@@ -32,57 +30,38 @@ class ImageLoader: ObservableObject {
     }
     
     func load() {
+        guard !isRunning else { return }
+
         if let image = cache?[url] {
-            print("🏎 Loaded from cache \(url)")
             self.image = image
             return
         }
         
-        guard !isRunning else { return }
-        
         cancellable = URLSession.shared.dataTaskPublisher(for: url)
             .map { UIImage(data: $0.data) }
             .replaceError(with: nil)
-            .handleEvents(receiveSubscription: onReceiveSubscription,
+            .handleEvents(receiveSubscription: { [unowned self] _ in self.onStart() },
                           receiveOutput: { [unowned self] in self.cache($0) },
-                          receiveCompletion: { _ in self.onReceiveCompletion() },
-                          receiveCancel: onReceiveCancel)
+                          receiveCompletion: { [unowned self] _ in self.onFinish() },
+                          receiveCancel: { [unowned self] in self.onFinish() })
             .subscribe(on: Self.imageProcessingQueue)
             .receive(on: DispatchQueue.main)
             .assign(to: \.image, on: self)
-    }
-    
-    private func onReceiveSubscription(_ subscription: Subscription) {
-        Self.activeLoaders[url] = self
-        Self.count += 1
-        count += 1
-        log(label: "Start")
-    }
-    
-    private func onReceiveCompletion() {
-        Self.count -= 1
-        count += 1
-        log(label: "Loaded")
-        Self.activeLoaders[url] = nil
-    }
-    
-    private func onReceiveCancel() {
-        Self.count -= 1
-        count -= 1
-        log(label: "Cancel")
-        Self.activeLoaders[url] = nil
-    }
-    
-    private func log(label: String) {
-        print("🏎 \(label) \(self.url) total \(Self.count) self \(count)")
     }
     
     func cancel() {
         cancellable?.cancel()
     }
     
+    private func onStart() {
+        Self.activeLoaders[url] = self
+    }
+    
+    private func onFinish() {
+        Self.activeLoaders[url] = nil
+    }
+    
     private func cache(_ image: UIImage?) {
-        log(label: "Cache")
         image.map { cache?[url] = $0 }
     }
 }

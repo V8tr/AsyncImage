@@ -79,14 +79,14 @@
 		8055F79A23F5A66200CB2CD4 /* AsyncImage */ = {
 			isa = PBXGroup;
 			children = (
-				8055F79F23F5A66200CB2CD4 /* ContentView.swift */,
-				800DAA0C23FE958400F5AE02 /* Movies */,
-				8055F7B123F5A72B00CB2CD4 /* AsyncImage.swift */,
-				8055F7B323F5A73100CB2CD4 /* ImageLoader.swift */,
-				800DAA0723FD8B6700F5AE02 /* ImageCache.swift */,
-				805F610F23FC0CD30010397E /* Spinner.swift */,
 				800DAA0F23FEB87E00F5AE02 /* Agent.swift */,
+				8055F7B123F5A72B00CB2CD4 /* AsyncImage.swift */,
+				8055F79F23F5A66200CB2CD4 /* ContentView.swift */,
+				800DAA0723FD8B6700F5AE02 /* ImageCache.swift */,
+				8055F7B323F5A73100CB2CD4 /* ImageLoader.swift */,
+				805F610F23FC0CD30010397E /* Spinner.swift */,
 				8055F7B023F5A6EE00CB2CD4 /* App */,
+				800DAA0C23FE958400F5AE02 /* Movies */,
 				8055F7A323F5A66300CB2CD4 /* Preview Content */,
 				8055F7AF23F5A6E500CB2CD4 /* SupportingFiles */,
 			);
