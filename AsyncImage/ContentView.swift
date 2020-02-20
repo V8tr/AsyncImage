@@ -11,8 +11,6 @@ import Combine
 
 struct ContentView: View {    
     var body: some View {
-//        Imgur.ImagesList()
-//            .environmentObject(Imgur.ImagesListViewModel())
         MoviesList()
             .environmentObject(MoviesListViewModel())
     }

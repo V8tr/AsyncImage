@@ -24,14 +24,6 @@ class ImageLoader: ObservableObject {
     
     static func loader(url: URL, cache: ImageCache? = nil) -> ImageLoader {
         return activeLoaders[url, default: ImageLoader(url: url, cache: cache)]
-        
-//        if let loader = activeLoaders[url] {
-//            return loader
-//        } else {
-//            let loader = ImageLoader(url: url, cache: cache)
-//            activeLoaders[url] = loader
-//            return loader
-//        }
     }
     
     private init(url: URL, cache: ImageCache? = nil) {
@@ -90,7 +82,6 @@ class ImageLoader: ObservableObject {
     }
     
     private func cache(_ image: UIImage?) {
-        assert(image != nil)
         log(label: "Cache")
         image.map { cache?[url] = $0 }
     }

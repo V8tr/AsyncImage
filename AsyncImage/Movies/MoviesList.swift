@@ -9,21 +9,13 @@
 import Combine
 import SwiftUI
 
-let cache = ImageCacheImpl()
+let cache = TemporaryImageCache()
 
 final class MoviesListViewModel: ObservableObject {
     @Published var state = State()
     
     private var tokens: Set<AnyCancellable> = []
-    
-    func search(_ term: String) {
-        Movies.API.search(term)
-            .map(\.results)
-            .replaceError(with: [])
-            .assign(to: \.state.movies, on: self)
-            .store(in: &tokens)
-    }
-    
+
     func searchTrending() {
         Movies.API.trending()
             .map(\.results)
@@ -40,19 +32,25 @@ final class MoviesListViewModel: ObservableObject {
 struct MoviesList: View {
     @EnvironmentObject var viewModel: MoviesListViewModel
     
-    var body: some View {
-        Group {
-            if self.viewModel.state.movies.isEmpty {
-                Spinner(isAnimating: true, style: .large)
-            } else {
-                movies
-            }
+    private var isLoading: Bool { self.viewModel.state.movies.isEmpty }
+    
+    private var moviesList: some View {
+        List(viewModel.state.movies) { movie in
+            MovieView(movie: movie)
         }
-        .onAppear { self.viewModel.searchTrending() }
     }
     
-    private var movies: some View {
-        List(viewModel.state.movies, rowContent: MovieView.init)
+    private var spinner: some View { Spinner(isAnimating: true, style: .large) }
+    
+    var body: some View {
+        Group {
+            if isLoading {
+                spinner
+            } else {
+                moviesList
+            }
+        }
+        .onAppear(perform: self.viewModel.searchTrending)
     }
 }
 
@@ -68,6 +66,7 @@ struct MovieView: View {
     
     private var title: some View {
         Text(movie.title)
+            .font(.title)
             .frame(idealWidth: .infinity, maxWidth: .infinity, alignment: .center)
     }
     
@@ -78,12 +77,14 @@ struct MovieView: View {
                 cache: cache,
                 placeholder: spinner,
                 configuration: { $0.resizable().renderingMode(.original) }
-            ).aspectRatio(contentMode: .fit)
+            )
         }
+        .aspectRatio(contentMode: .fit)
+        .frame(idealHeight: UIScreen.main.bounds.width / 2 * 3) // 2:3 aspect ratio
     }
     
     private var spinner: some View {
-        Spinner(isAnimating: true, style: .large)
+        Spinner(isAnimating: true, style: .medium)
     }
 }
 

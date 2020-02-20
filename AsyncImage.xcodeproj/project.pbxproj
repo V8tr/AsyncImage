@@ -10,6 +10,7 @@
 		800DAA0823FD8B6700F5AE02 /* ImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 800DAA0723FD8B6700F5AE02 /* ImageCache.swift */; };
 		800DAA0A23FE91D200F5AE02 /* MoviesAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 800DAA0923FE91D200F5AE02 /* MoviesAPI.swift */; };
 		800DAA0E23FE959100F5AE02 /* MoviesList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 800DAA0D23FE959100F5AE02 /* MoviesList.swift */; };
+		800DAA1023FEB87E00F5AE02 /* Agent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 800DAA0F23FEB87E00F5AE02 /* Agent.swift */; };
 		8055F79C23F5A66200CB2CD4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8055F79B23F5A66200CB2CD4 /* AppDelegate.swift */; };
 		8055F79E23F5A66200CB2CD4 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8055F79D23F5A66200CB2CD4 /* SceneDelegate.swift */; };
 		8055F7A023F5A66200CB2CD4 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8055F79F23F5A66200CB2CD4 /* ContentView.swift */; };
@@ -19,14 +20,13 @@
 		8055F7B223F5A72B00CB2CD4 /* AsyncImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8055F7B123F5A72B00CB2CD4 /* AsyncImage.swift */; };
 		8055F7B423F5A73100CB2CD4 /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8055F7B323F5A73100CB2CD4 /* ImageLoader.swift */; };
 		805F611023FC0CD30010397E /* Spinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805F610F23FC0CD30010397E /* Spinner.swift */; };
-		809B9EC123F6B36800425B0A /* ImgurImagesList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809B9EC023F6B36800425B0A /* ImgurImagesList.swift */; };
-		809B9EC323F6B86000425B0A /* ImgurAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809B9EC223F6B86000425B0A /* ImgurAPI.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		800DAA0723FD8B6700F5AE02 /* ImageCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCache.swift; sourceTree = "<group>"; };
 		800DAA0923FE91D200F5AE02 /* MoviesAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviesAPI.swift; sourceTree = "<group>"; };
 		800DAA0D23FE959100F5AE02 /* MoviesList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviesList.swift; sourceTree = "<group>"; };
+		800DAA0F23FEB87E00F5AE02 /* Agent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Agent.swift; sourceTree = "<group>"; };
 		8055F79823F5A66200CB2CD4 /* AsyncImage.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AsyncImage.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8055F79B23F5A66200CB2CD4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8055F79D23F5A66200CB2CD4 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -38,8 +38,6 @@
 		8055F7B123F5A72B00CB2CD4 /* AsyncImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncImage.swift; sourceTree = "<group>"; };
 		8055F7B323F5A73100CB2CD4 /* ImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
 		805F610F23FC0CD30010397E /* Spinner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spinner.swift; sourceTree = "<group>"; };
-		809B9EC023F6B36800425B0A /* ImgurImagesList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImgurImagesList.swift; sourceTree = "<group>"; };
-		809B9EC223F6B86000425B0A /* ImgurAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImgurAPI.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,15 +51,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		800DAA0B23FE957E00F5AE02 /* Imgur */ = {
-			isa = PBXGroup;
-			children = (
-				809B9EC023F6B36800425B0A /* ImgurImagesList.swift */,
-				809B9EC223F6B86000425B0A /* ImgurAPI.swift */,
-			);
-			path = Imgur;
-			sourceTree = "<group>";
-		};
 		800DAA0C23FE958400F5AE02 /* Movies */ = {
 			isa = PBXGroup;
 			children = (
@@ -91,12 +80,12 @@
 			isa = PBXGroup;
 			children = (
 				8055F79F23F5A66200CB2CD4 /* ContentView.swift */,
-				800DAA0B23FE957E00F5AE02 /* Imgur */,
 				800DAA0C23FE958400F5AE02 /* Movies */,
 				8055F7B123F5A72B00CB2CD4 /* AsyncImage.swift */,
 				8055F7B323F5A73100CB2CD4 /* ImageLoader.swift */,
 				800DAA0723FD8B6700F5AE02 /* ImageCache.swift */,
 				805F610F23FC0CD30010397E /* Spinner.swift */,
+				800DAA0F23FEB87E00F5AE02 /* Agent.swift */,
 				8055F7B023F5A6EE00CB2CD4 /* App */,
 				8055F7A323F5A66300CB2CD4 /* Preview Content */,
 				8055F7AF23F5A6E500CB2CD4 /* SupportingFiles */,
@@ -203,9 +192,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				8055F7B223F5A72B00CB2CD4 /* AsyncImage.swift in Sources */,
+				800DAA1023FEB87E00F5AE02 /* Agent.swift in Sources */,
 				800DAA0A23FE91D200F5AE02 /* MoviesAPI.swift in Sources */,
-				809B9EC323F6B86000425B0A /* ImgurAPI.swift in Sources */,
-				809B9EC123F6B36800425B0A /* ImgurImagesList.swift in Sources */,
 				800DAA0E23FE959100F5AE02 /* MoviesList.swift in Sources */,
 				800DAA0823FD8B6700F5AE02 /* ImageCache.swift in Sources */,
 				8055F79C23F5A66200CB2CD4 /* AppDelegate.swift in Sources */,
