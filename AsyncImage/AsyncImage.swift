@@ -9,12 +9,11 @@
 import SwiftUI
 
 struct AsyncImage<Placeholder: View>: View {
-    @ObservedObject var loader: ImageLoader
-    
+    @ObservedObject private var loader: ImageLoader
     private let placeholder: Placeholder?
     private let configuration: (Image) -> Image
     
-    init(url: URL, cache: ImageCache? = nil, placeholder: Placeholder? = nil, configuration: @escaping (Image) -> Image) {
+    init(url: URL, cache: ImageCache? = nil, placeholder: Placeholder? = nil, configuration: @escaping (Image) -> Image = { $0 }) {
         loader = .loader(url: url, cache: cache)
         self.placeholder = placeholder
         self.configuration = configuration

@@ -7,15 +7,16 @@
 //
 
 import Combine
-import SwiftUI
+import UIKit
 
 class ImageLoader: ObservableObject {
     @Published var image: UIImage?
     
+    var isLoading: Bool { Self.activeLoaders[url] != nil }
+    
     private let url: URL
     private var cache: ImageCache?
     private var cancellable: AnyCancellable?
-    private var isRunning: Bool { Self.activeLoaders[url] != nil }
     
     private static var activeLoaders: [URL: ImageLoader] = [:]
     private static let imageProcessingQueue = DispatchQueue(label: "image-processing")
@@ -30,7 +31,7 @@ class ImageLoader: ObservableObject {
     }
     
     func load() {
-        guard !isRunning else { return }
+        guard !isLoading else { return }
 
         if let image = cache?[url] {
             self.image = image
