@@ -29,10 +29,8 @@ struct AsyncImage<Placeholder: View>: View {
         Group {
             if loader.image != nil {
                 configuration(Image(uiImage: loader.image!))
-            } else if placeholder != nil {
-                placeholder
             } else {
-                EmptyView()
+                placeholder
             }
         }
     }
