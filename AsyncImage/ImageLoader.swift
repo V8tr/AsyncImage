@@ -12,13 +12,12 @@ import UIKit
 class ImageLoader: ObservableObject {
     @Published var image: UIImage?
     
-    private(set) var isLoading: Bool = false
+    private(set) var isLoading = false
     
     private let url: URL
     private var cache: ImageCache?
     private var cancellable: AnyCancellable?
     
-    private static var activeLoaders: [URL: ImageLoader] = [:]
     private static let imageProcessingQueue = DispatchQueue(label: "image-processing")
     
     init(url: URL, cache: ImageCache? = nil) {
