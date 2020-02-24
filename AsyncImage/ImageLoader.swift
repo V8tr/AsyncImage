@@ -12,7 +12,7 @@ import UIKit
 class ImageLoader: ObservableObject {
     @Published var image: UIImage?
     
-    var isLoading: Bool { Self.activeLoaders[url] != nil }
+    private(set) var isLoading: Bool = false
     
     private let url: URL
     private var cache: ImageCache?
@@ -21,11 +21,7 @@ class ImageLoader: ObservableObject {
     private static var activeLoaders: [URL: ImageLoader] = [:]
     private static let imageProcessingQueue = DispatchQueue(label: "image-processing")
     
-    static func loader(url: URL, cache: ImageCache? = nil) -> ImageLoader {
-        return activeLoaders[url, default: ImageLoader(url: url, cache: cache)]
-    }
-    
-    private init(url: URL, cache: ImageCache? = nil) {
+    init(url: URL, cache: ImageCache? = nil) {
         self.url = url
         self.cache = cache
     }
@@ -55,11 +51,11 @@ class ImageLoader: ObservableObject {
     }
     
     private func onStart() {
-        Self.activeLoaders[url] = self
+        isLoading = true
     }
     
     private func onFinish() {
-        Self.activeLoaders[url] = nil
+        isLoading = false
     }
     
     private func cache(_ image: UIImage?) {

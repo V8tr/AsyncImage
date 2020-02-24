@@ -8,10 +8,21 @@
 
 import SwiftUI
 
+let posters = [
+    "https://image.tmdb.org/t/p/original//pThyQovXQrw2m0s9x82twj48Jq4.jpg",
+    "https://image.tmdb.org/t/p/original//vqzNJRH4YyquRiWxCCOH0aXggHI.jpg",
+    "https://image.tmdb.org/t/p/original//6ApDtO7xaWAfPqfi2IARXIzj8QS.jpg",
+    "https://image.tmdb.org/t/p/original//7GsM4mtM0worCtIVeiQt28HieeN.jpg"
+].map { URL(string: $0)! }
+
 struct ContentView: View {
+    let cache = TemporaryImageCache()
+
     var body: some View {
-        MoviesList()
-            .environmentObject(MoviesListViewModel())
+         List(posters, id: \.self) { url in
+             AsyncImage(url: url, cache: self.cache, placeholder: Text("Loading ..."), configuration: { $0.resizable() })
+                .frame(idealHeight: UIScreen.main.bounds.width / 2 * 3) // 2:3 aspect ratio
+         }
     }
 }
 
