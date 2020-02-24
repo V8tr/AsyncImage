@@ -40,7 +40,6 @@ class ImageLoader: ObservableObject {
                           receiveOutput: { [unowned self] in self.cache($0) },
                           receiveCompletion: { [unowned self] _ in self.onFinish() },
                           receiveCancel: { [unowned self] in self.onFinish() })
-            .subscribe(on: Self.imageProcessingQueue)
             .receive(on: DispatchQueue.main)
             .assign(to: \.image, on: self)
     }
