@@ -16,7 +16,7 @@ let posters = [
 ].map { URL(string: $0)! }
 
 struct ContentView: View {
-    let cache = TemporaryImageCache()
+    @Environment(\.imageCache) var cache: ImageCache
 
     var body: some View {
          List(posters, id: \.self) { url in
