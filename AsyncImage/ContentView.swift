@@ -20,8 +20,13 @@ struct ContentView: View {
 
     var body: some View {
          List(posters, id: \.self) { url in
-             AsyncImage(url: url, cache: self.cache, placeholder: Text("Loading ..."), configuration: { $0.resizable() })
-                .frame(idealHeight: UIScreen.main.bounds.width / 2 * 3) // 2:3 aspect ratio
+             AsyncImage(
+                url: url,
+                cache: self.cache,
+                placeholder: Text("Loading ..."),
+                configuration: { $0.resizable() }
+             )
+            .frame(idealHeight: UIScreen.main.bounds.width / 2 * 3) // 2:3 aspect ratio
          }
     }
 }
