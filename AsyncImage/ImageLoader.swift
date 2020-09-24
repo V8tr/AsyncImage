@@ -26,7 +26,7 @@ class ImageLoader: ObservableObject {
     }
     
     deinit {
-        cancellable?.cancel()
+        cancel()
     }
     
     func load() {
@@ -46,7 +46,7 @@ class ImageLoader: ObservableObject {
                           receiveCancel: { [weak self] in self?.onFinish() })
             .subscribe(on: Self.imageProcessingQueue)
             .receive(on: DispatchQueue.main)
-            .assign(to: \.image, on: self)
+            .sink { [weak self] in self?.image = $0 }
     }
     
     func cancel() {

@@ -16,20 +16,18 @@ let posters = [
 ].map { URL(string: $0)! }
 
 struct ContentView: View {
-    @Environment(\.imageCache) var cache: ImageCache
-
     var body: some View {
          List(posters, id: \.self) { url in
              AsyncImage(
                 url: url,
-                cache: self.cache,
-                placeholder: Text("Loading ..."),
-                configuration: { $0.resizable() }
+                placeholder: { Text("Loading ...") },
+                image: { Image(uiImage: $0).resizable() }
              )
             .frame(idealHeight: UIScreen.main.bounds.width / 2 * 3) // 2:3 aspect ratio
          }
     }
 }
+
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {

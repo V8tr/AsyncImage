@@ -9,26 +9,74 @@
 import SwiftUI
 
 struct AsyncImage<Placeholder: View>: View {
-    @ObservedObject private var loader: ImageLoader
-    private let placeholder: Placeholder?
-    private let configuration: (Image) -> Image
+    @StateObject private var loader: ImageLoader
+    private let placeholder: Placeholder
+    private let image: (UIImage) -> Image
     
-    init(url: URL, cache: ImageCache? = nil, placeholder: Placeholder? = nil, configuration: @escaping (Image) -> Image = { $0 }) {
-        loader = ImageLoader(url: url, cache: cache)
-        self.placeholder = placeholder
-        self.configuration = configuration
+    init(
+        url: URL,
+        @ViewBuilder placeholder: () -> Placeholder,
+        @ViewBuilder image: @escaping (UIImage) -> Image = Image.init(uiImage:)
+    ) {
+        self.placeholder = placeholder()
+        self.image = image
+        _loader = StateObject(wrappedValue: ImageLoader(url: url, cache: Environment(\.imageCache).wrappedValue))
     }
     
     var body: some View {
-        image
+        content
             .onAppear(perform: loader.load)
-            .onDisappear(perform: loader.cancel)
     }
     
-    private var image: some View {
+    private var content: some View {
         Group {
             if loader.image != nil {
-                configuration(Image(uiImage: loader.image!))
+                image(loader.image!)
+            } else {
+                placeholder
+            }
+        }
+    }
+}
+
+struct AsyncImage_1<Placeholder: View>: View {
+    @StateObject private var loader: ImageLoader
+    private let placeholder: Placeholder
+
+    init(url: URL, @ViewBuilder placeholder: () -> Placeholder) {
+        self.placeholder = placeholder()
+        _loader = StateObject(wrappedValue: ImageLoader(url: url))
+    }
+
+    var body: some View {
+        content
+            .onAppear(perform: loader.load)
+    }
+
+    private var content: some View {
+        placeholder
+    }
+}
+
+struct AsyncImage_2<Placeholder: View>: View {
+    @StateObject private var loader: ImageLoader
+    private let placeholder: Placeholder
+
+    init(url: URL, @ViewBuilder placeholder: () -> Placeholder) {
+        self.placeholder = placeholder()
+        _loader = StateObject(wrappedValue: ImageLoader(url: url, cache: Environment(\.imageCache).wrappedValue))
+    }
+
+    var body: some View {
+        content
+            .onAppear(perform: loader.load)
+    }
+
+    private var content: some View {
+        Group {
+            if loader.image != nil {
+                Image(uiImage: loader.image!)
+                    .resizable()
             } else {
                 placeholder
             }
